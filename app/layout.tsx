@@ -1,11 +1,16 @@
-import './globals.css';
 import '@radix-ui/themes/styles.css';
+import './theme-config.css';
+import './globals.css';
 import type { Metadata } from 'next';
-import { Open_Sans } from 'next/font/google';
+import { Raleway } from 'next/font/google';
 import { Theme } from '@radix-ui/themes';
 import { NavBar } from '@/app/NavBar';
 
-const openSans = Open_Sans({ subsets: ['latin'] });
+const raleway = Raleway({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-raleway'
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={openSans.className}>
-        <Theme>
+    <html lang="en" suppressHydrationWarning>
+      <body className={raleway.variable}>
+        <Theme appearance="dark" accentColor="violet" radius="large">
           <NavBar />
           <main className="p-5">{children}</main>
         </Theme>
