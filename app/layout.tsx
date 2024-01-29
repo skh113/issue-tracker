@@ -1,9 +1,11 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
+import '@radix-ui/themes/styles.css';
+import type { Metadata } from 'next';
+import { Raleway } from 'next/font/google';
+import { Theme } from '@radix-ui/themes';
 import { NavBar } from '@/app/NavBar';
 
-const inter = Inter({ subsets: ['latin'] });
+const raleway = Raleway({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,9 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <NavBar />
-        <main>{children}</main>
+      <body className={raleway.className}>
+        <Theme>
+          <NavBar />
+          <main>{children}</main>
+        </Theme>
       </body>
     </html>
   );
