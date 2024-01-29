@@ -1,11 +1,11 @@
 import './globals.css';
 import '@radix-ui/themes/styles.css';
 import type { Metadata } from 'next';
-import { Raleway } from 'next/font/google';
+import { Open_Sans } from 'next/font/google';
 import { Theme } from '@radix-ui/themes';
 import { NavBar } from '@/app/NavBar';
 
-const raleway = Raleway({ subsets: ['latin'] });
+const openSans = Open_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,10 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={raleway.className}>
+      <body className={openSans.className}>
         <Theme>
           <NavBar />
-          <main>{children}</main>
+          <main className="p-5">{children}</main>
         </Theme>
       </body>
     </html>
