@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={raleway.variable}>
-        <Theme appearance="dark" accentColor="violet" radius="large">
+        <Theme accentColor="violet" radius="large">
           <NavBar />
           <main className="p-5">{children}</main>
         </Theme>

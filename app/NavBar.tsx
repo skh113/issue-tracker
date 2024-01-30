@@ -22,9 +22,9 @@ export function NavBar() {
           <Link
             href={link.href}
             className={classNames({
-              'text-zinc-100': link.href === currentPath,
+              'text-zinc-900': link.href === currentPath,
               'text-zinc-500': link.href !== currentPath,
-              'hover:text-zinc-200 transition-colors': true
+              'hover:text-zinc-700 transition-colors': true
             })}
             key={index}
           >
