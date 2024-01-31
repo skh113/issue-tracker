@@ -1,10 +1,10 @@
+import { NavBar } from '@/app/NavBar';
+import { Container, Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
-import './theme-config.css';
-import './globals.css';
 import type { Metadata } from 'next';
 import { Raleway } from 'next/font/google';
-import { Theme } from '@radix-ui/themes';
-import { NavBar } from '@/app/NavBar';
+import './globals.css';
+import './theme-config.css';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -27,7 +27,9 @@ export default function RootLayout({
       <body className={raleway.variable}>
         <Theme accentColor="violet" radius="large">
           <NavBar />
-          <main className="p-5">{children}</main>
+          <main className="p-5">
+            <Container>{children}</Container>
+          </main>
         </Theme>
       </body>
     </html>
