@@ -46,8 +46,13 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setLoading(true);
-      await axios.post('/api/issues', data);
+      // check for updating or creating an issue
+      if (issue) await axios.patch('/api/issues/' + issue.id, data);
+      else await axios.post('/api/issues', data);
+
       router.push('/issues');
+      // refresh to invalidate the client side cache
+      router.refresh();
     } catch (error) {
       setLoading(false);
       setError('An unexpected error occurred!');
@@ -119,7 +124,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button disabled={isLoading}>
-          {issue ? 'Edit issue' : 'Submit new issue'}
+          {issue ? 'Update issue' : 'Submit new issue'}
           {isLoading && <Spinner />}
         </Button>
       </form>
