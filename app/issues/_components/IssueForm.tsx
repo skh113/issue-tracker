@@ -2,10 +2,12 @@
 
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import { createIssueSchema } from '@/app/validationSchemas';
+import { statusMap } from '@/app/constants';
+import { issueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
-import { Button, Callout, TextField } from '@radix-ui/themes';
+import { CaretDownIcon } from '@radix-ui/react-icons';
+import { Button, Callout, DropdownMenu, TextField } from '@radix-ui/themes';
 import axios from 'axios';
 import 'easymde/dist/easymde.min.css';
 import dynamic from 'next/dynamic';
@@ -19,7 +21,7 @@ const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false
 });
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
 // only needed in edit page, so it's optional
 const IssueForm = ({ issue }: { issue?: Issue }) => {
@@ -28,12 +30,18 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     register,
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue,
+    watch
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema)
+    resolver: zodResolver(issueSchema),
+    defaultValues: {
+      status: issue?.status || 'OPEN'
+    }
   });
   const [error, setError] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const selectedStatus = watch('status');
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -66,6 +74,40 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           />
         </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
+        <DropdownMenu.Root {...register('status')}>
+          <DropdownMenu.Trigger>
+            <Button variant="surface" color={statusMap[selectedStatus].color}>
+              {selectedStatus
+                ? statusMap[selectedStatus].label
+                : issue
+                ? issue.status
+                : 'Select Status'}
+              <CaretDownIcon />
+            </Button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item
+              onClick={() => setValue('status', 'OPEN')}
+              shortcut="⌘ E"
+            >
+              Open
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onClick={() => setValue('status', 'IN_PROGRESS')}
+              shortcut="⌘ P"
+            >
+              In Progress
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onClick={() => setValue('status', 'CLOSED')}
+              shortcut="⌘ C"
+            >
+              Closed
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+
         <Controller
           name="description"
           control={control}
@@ -77,7 +119,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button disabled={isLoading}>
-          Submit new issue
+          {issue ? 'Edit issue' : 'Submit new issue'}
           {isLoading && <Spinner />}
         </Button>
       </form>
