@@ -46,7 +46,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       if (issue) await axios.patch('/api/issues/' + issue.id, data);
       else await axios.post('/api/issues', data);
 
-      router.push('/issues');
+      router.push('/issues/list');
       // refresh to invalidate the client side cache
       router.refresh();
     } catch (error) {
