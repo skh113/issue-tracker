@@ -13,6 +13,7 @@ import {
   Flex,
   Text,
 } from "@radix-ui/themes";
+import { Skeleton } from "@/app/components";
 
 export function NavBar() {
   return (
@@ -62,7 +63,8 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading")
+    return <Skeleton circle width="27px" height="27px" />;
 
   if (status === "unauthenticated")
     return (
