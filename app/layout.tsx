@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Raleway } from 'next/font/google';
 import './globals.css';
 import './theme-config.css';
+import AuthProvider from '@/app/auth/provider';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -25,12 +26,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={raleway.variable}>
-        <Theme accentColor="violet" radius="large">
-          <NavBar />
-          <main className="p-5">
-            <Container>{children}</Container>
-          </main>
-        </Theme>
+        <AuthProvider>
+          <Theme accentColor="violet" radius="large">
+            <NavBar />
+            <main className="p-5">
+              <Container>{children}</Container>
+            </main>
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );
