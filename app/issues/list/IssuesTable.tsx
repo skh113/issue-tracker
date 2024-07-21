@@ -1,4 +1,4 @@
-import { Flex, Table } from "@radix-ui/themes";
+import { Flex, Heading, Table } from "@radix-ui/themes";
 import NextLink from "next/link";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { IssueStatusBadge, Link } from "@/app/components";
@@ -17,6 +17,8 @@ interface Props {
 }
 
 const IssuesTable = ({ searchParams, issues }: Props) => {
+  if (issues.length === 0) return <Heading>No issues yet...</Heading>;
+
   return (
     <Table.Root variant="surface">
       <Table.Header>
