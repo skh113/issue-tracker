@@ -4,10 +4,10 @@ import { Flex, Table } from "@radix-ui/themes";
 import IssueActions from "./IssueActions";
 import { Issue, Status } from "@prisma/client";
 import NextLink from "next/link";
-import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 
 interface Props {
-  searchParams: { status: Status; orderBy: keyof Issue };
+  searchParams: { status: Status; orderBy: keyof Issue; sort: "asc" | "desc" };
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
@@ -32,14 +32,20 @@ const IssuesPage = async ({ searchParams }: Props) => {
   const status = statues.includes(searchParams.status)
     ? searchParams.status
     : undefined;
+
+  const orders = ["asc", "desc"];
+  const order = orders.includes(searchParams.sort)
+    ? searchParams.sort
+    : undefined;
+
   const issues = await prisma.issue.findMany({
     where: {
       status: status,
     },
     orderBy: {
-      title: searchParams.orderBy === "title" ? "asc" : undefined,
-      status: searchParams.orderBy === "status" ? "asc" : undefined,
-      createdAt: searchParams.orderBy === "createdAt" ? "asc" : undefined,
+      title: searchParams.orderBy === "title" ? order : undefined,
+      status: searchParams.orderBy === "status" ? order : undefined,
+      createdAt: searchParams.orderBy === "createdAt" ? order : undefined,
     },
   });
 
@@ -58,12 +64,22 @@ const IssuesPage = async ({ searchParams }: Props) => {
                 <Flex gap="1" align="center">
                   <NextLink
                     href={{
-                      query: { ...searchParams, orderBy: column.value },
+                      query: {
+                        ...searchParams,
+                        orderBy: column.value,
+                        sort: searchParams.sort === "asc" ? "desc" : "asc",
+                      },
                     }}
                   >
                     {column.label}
                   </NextLink>
-                  {column.value === searchParams.orderBy && <ArrowUpIcon />}
+                  {column.value === searchParams.orderBy &&
+                  searchParams.sort === "asc" ? (
+                    <ArrowUpIcon />
+                  ) : column.value === searchParams.orderBy &&
+                    searchParams.sort === "desc" ? (
+                    <ArrowDownIcon />
+                  ) : null}
                 </Flex>
               </Table.ColumnHeaderCell>
             ))}
