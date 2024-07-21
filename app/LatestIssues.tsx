@@ -1,5 +1,5 @@
 import prisma from "@/prisma/client";
-import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes";
+import { Avatar, Flex, Heading, Table } from "@radix-ui/themes";
 import { IssueStatusBadge, Link, Skeleton } from "@/app/components";
 
 const LatestIssues = async () => {
@@ -12,11 +12,11 @@ const LatestIssues = async () => {
   });
 
   return (
-    <Card>
+    <Flex direction="column">
       <Heading size="6" mb="3">
         Latest Issues
       </Heading>
-      <Table.Root>
+      <Table.Root variant="surface">
         <Table.Body>
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
@@ -41,7 +41,7 @@ const LatestIssues = async () => {
           ))}
         </Table.Body>
       </Table.Root>
-    </Card>
+    </Flex>
   );
 };
 
