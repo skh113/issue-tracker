@@ -26,6 +26,8 @@ const IssueStatusFilter = () => {
           params.append("orderBy", searchParams.get("orderBy")!);
         if (searchParams.get("sort"))
           params.append("sort", searchParams.get("sort")!);
+        if (searchParams.get("page"))
+          params.append("page", searchParams.get("page")!);
 
         const query = params.size ? "?" + params.toString() : "";
         router.push("/issues/list" + query);
