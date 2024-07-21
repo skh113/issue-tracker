@@ -6,9 +6,9 @@ import axios from "axios";
 import { Skeleton } from "@/app/components";
 import { toast, Toaster } from "react-hot-toast";
 import useUsers from "@/app/hooks/useUsers";
+import { UnassignedValue } from "@/app/constants";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const UnassignedValue = "null";
   const { data: users, error, isLoading } = useUsers();
 
   const handleAssignUser = async (userId: string) => {
