@@ -68,7 +68,11 @@ const IssuesPage = async ({ searchParams }: Props) => {
                       query: {
                         ...searchParams,
                         orderBy: column.value,
-                        sort: searchParams.sort === "asc" ? "desc" : "asc",
+                        sort:
+                          searchParams.sort === "asc" &&
+                          searchParams.orderBy === column.value
+                            ? "desc"
+                            : "asc",
                       },
                     }}
                   >
