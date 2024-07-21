@@ -1,24 +1,15 @@
 "use client";
 
 import { Select } from "@radix-ui/themes";
-import { Issue, User } from "@prisma/client";
+import { Issue } from "@prisma/client";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/app/components";
 import { toast, Toaster } from "react-hot-toast";
+import useUsers from "@/app/hooks/useUsers";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const UnassignedValue = "null";
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: () => axios.get<User[]>("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000, //60s
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
 
   const handleAssignUser = async (userId: string) => {
     await axios
